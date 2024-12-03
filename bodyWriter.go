@@ -10,8 +10,9 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import (
 	"bytes"
-	"github.com/gin-gonic/gin"
 	"io"
+
+	"github.com/gin-gonic/gin"
 )
 
 // respWriter wraps the default request writer to allow for compressing the request contents. It uses an internal buffer
@@ -44,6 +45,10 @@ func (rw *respWriter) WriteString(s string) (int, error) {
 }
 
 func (rw *respWriter) Write(b []byte) (int, error) {
+	if rw.ResponseWriter.Header().Get("Content-Encoding") != "" {
+		return rw.ResponseWriter.Write(b)
+	}
+
 	rw.Header().Del("Content-Length")
 
 	if !rw.Swapped() && rw.buf.Len()+len(b) >= rw.threshold {
