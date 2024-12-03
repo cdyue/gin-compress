@@ -3,16 +3,17 @@ package compress_test
 import (
 	"bytes"
 	"fmt"
-	"github.com/andybalholm/brotli"
-	compress "github.com/lf4096/gin-compress"
-	"github.com/klauspost/compress/gzip"
-	"github.com/klauspost/compress/zlib"
-	"github.com/klauspost/compress/zstd"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/andybalholm/brotli"
+	compress "github.com/cdyue/gin-compress"
+	"github.com/klauspost/compress/gzip"
+	"github.com/klauspost/compress/zlib"
+	"github.com/klauspost/compress/zstd"
+	"github.com/stretchr/testify/assert"
 )
 
 /*

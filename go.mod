@@ -6,7 +6,6 @@ require (
 	github.com/andybalholm/brotli v1.1.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/klauspost/compress v1.17.11
-	github.com/lf4096/gin-compress v0.1.0
 	github.com/stretchr/testify v1.10.0
 )
 
