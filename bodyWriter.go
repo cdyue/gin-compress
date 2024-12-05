@@ -45,7 +45,7 @@ func (rw *respWriter) WriteString(s string) (int, error) {
 }
 
 func (rw *respWriter) Write(b []byte) (int, error) {
-	if rw.ResponseWriter.Header().Get("Content-Encoding") != "" {
+	if !rw.Written() && rw.ResponseWriter.Header().Get("Content-Encoding") != "" {
 		return rw.ResponseWriter.Write(b)
 	}
 
