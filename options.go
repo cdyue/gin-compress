@@ -20,6 +20,8 @@ const (
 	BROTLI  = "br"
 )
 
+var _skipPaths []string
+
 // ExcludeFunc should return true if compression should be skipped for the current request
 type ExcludeFunc func(c *gin.Context) bool
 
@@ -34,6 +36,8 @@ type compressOptions struct {
 	maxDecodeSteps int
 	// skipDecompressRequest can be used to skip decompression of the body
 	skipDecompressRequest bool
+
+	skipPaths []string
 }
 
 type CompressOption func(opts *compressOptions)
@@ -115,4 +119,22 @@ func WithDecompressBody(decompress bool) CompressOption {
 	return func(opts *compressOptions) {
 		opts.skipDecompressRequest = !decompress
 	}
+}
+
+// WithSkipPaths specifies the apths that do not decompress the request body
+func WithSkipPaths(pathList ...string) CompressOption {
+	return func(opts *compressOptions) {
+		opts.skipPaths = pathList
+	}
+}
+
+// WithDefaultSkipPaths specifies the apths that do not decompress the request body
+func WithDefaultSkipPaths() CompressOption {
+	return func(opts *compressOptions) {
+		opts.skipPaths = _skipPaths
+	}
+}
+
+func RegisterDefaultSkipPaths(pathList ...string) {
+	_skipPaths = pathList
 }

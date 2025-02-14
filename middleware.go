@@ -53,7 +53,7 @@ func (cm *compressMiddleware) Handler(c *gin.Context) {
 
 // decompresses the request body, if one exists and Content-Encoding is specified
 func (cm *compressMiddleware) decompressRequest(c *gin.Context) (func() error, error) {
-	if cm.cfg.skipDecompressRequest {
+	if cm.cfg.skipDecompressRequest || cm.shouldDecompress(c) {
 		return nil, nil
 	}
 
@@ -171,4 +171,14 @@ func (cm *compressMiddleware) shouldCompress(c *gin.Context) bool {
 	}
 
 	return len(getEnabledAlgorithms()) > 0
+}
+
+func (cm *compressMiddleware) shouldDecompress(c *gin.Context) bool {
+	path := c.Request.URL.Path
+	for _, v := range cm.cfg.skipPaths {
+		if v == path {
+			return false
+		}
+	}
+	return true
 }
